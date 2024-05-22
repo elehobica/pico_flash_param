@@ -25,6 +25,8 @@ class Parameter {
 public:
     Parameter(const uint32_t& id, const char* name, const uint32_t& flashAddr, const valueType& defaultValue, size_t& size);
     Parameter(const uint32_t& id, const char* name, const uint32_t& flashAddr, const valueType& defaultValue);
+    Parameter(const uint32_t& id, const char* name, const valueType& defaultValue, size_t& size);
+    Parameter(const uint32_t& id, const char* name, const valueType& defaultValue);
     void set(valueType value_) { value = value_; }
     valueType get() const { return value; }
 private:
@@ -114,7 +116,11 @@ class Params
         auto& paramPtr = std::get<T*>(item);
         return *paramPtr;
     }
+    uint32_t getNextFlashAddr() const { return nextFlashAddr; }
+    void setNextFlashAddr(uint32_t addr) { nextFlashAddr = addr; }
+    void addNextFlashAddr(uint32_t value) { nextFlashAddr += value; }
     std::map<const uint32_t, variant_t> paramMap;
+    uint32_t nextFlashAddr = 0;
     template<typename> friend class Parameter;  // for all Parameter<> classes
     friend class FlashParam;
 };
