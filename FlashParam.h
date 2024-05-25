@@ -131,7 +131,6 @@ class Params
 class FlashParam
 {
 public:
-    static FlashParam& instance(); // Singleton
     void printInfo() const;
     void finalize() const;
     /*

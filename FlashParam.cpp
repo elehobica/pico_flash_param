@@ -142,12 +142,6 @@ void Params::storeToFlash() const
 //=================================
 // Implementation of FlashParam class
 //=================================
-FlashParam& FlashParam::instance()
-{
-    static FlashParam instance; // Singleton
-    return instance;
-}
-
 void FlashParam::printInfo() const
 {
     UserFlash& userFlash = UserFlash::instance();
