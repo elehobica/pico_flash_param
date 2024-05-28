@@ -12,7 +12,7 @@
 ### User parameter class declaration
 * Generate interherited class from FlashParamNs::FlashParam as Singleton
 * Define user parameters with template with primitive type
-  * Supported types: bool, uint8_t, uint16_t, uint32_t, uint64_t, int8_t, int16_t, int32_t, int64_t, float, double and char*
+  * Supported types: bool, uint8_t, uint16_t, uint32_t, uint64_t, int8_t, int16_t, int32_t, int64_t, float, double and const char*
 ```
 #include "FlashParam.h"
 struct ConfigParam : FlashParamNs::FlashParam {
@@ -21,12 +21,12 @@ struct ConfigParam : FlashParamNs::FlashParam {
         static ConfigParam instance;
         return instance;
     }
-    // Parameter<T>                   inst     id   name                default
-    FlashParamNs::Parameter<uint32_t> P_PARAM0{0,  "param0 (uint32_t)", 10};
-    FlashParamNs::Parameter<uint8_t>  P_PARAM1{1,  "param1 (uint8_t)",  240};
-    FlashParamNs::Parameter<int16_t>  P_PARAM2{2,  "param2 (int16_t)",  -4096};
-    FlashParamNs::Parameter<float>    P_PARAM3{3,  "param3 (float)",    1.23e-3};
-    FlashParamNs::Parameter<char*>    P_PARAM4{4,  "param4 (char*)",    "ABCD"};
+    // Parameter<T>                      inst     id   name                   default
+    FlashParamNs::Parameter<uint32_t>    P_PARAM0{0,  "param0 (uint32_t)",    10};
+    FlashParamNs::Parameter<uint8_t>     P_PARAM1{1,  "param1 (uint8_t)",     240};
+    FlashParamNs::Parameter<int16_t>     P_PARAM2{2,  "param2 (int16_t)",     -4096};
+    FlashParamNs::Parameter<float>       P_PARAM3{3,  "param3 (float)",       1.23e-3};
+    FlashParamNs::Parameter<const char*> P_PARAM4{4,  "param4 (const char*)", "ABCD"};
 };
 ```
 ### Getter/Setter by direct instance access
@@ -35,7 +35,7 @@ struct ConfigParam : FlashParamNs::FlashParam {
     P_PARAM0.set(0x89abcdef);
     auto& value = P_PARAM0.get();  // value is uint32_t
 ```
-### Getter/Setter by direct instance access
+### Getter/Setter by id access
 * Template type needs to match the type of value
 ```
     ConfigParam.setValue<uint32_t>(0, 0x89abcdef);

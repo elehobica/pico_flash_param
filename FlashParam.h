@@ -51,7 +51,7 @@ using variant_t = std::variant<
     Parameter<uint8_t>*, Parameter<uint16_t>*, Parameter<uint32_t>*, Parameter<uint64_t>*,
     Parameter<int8_t>*, Parameter<int16_t>*, Parameter<int32_t>*, Parameter<int64_t>*,
     Parameter<float>*, Parameter<double>*,
-    Parameter<char*>*>;
+    Parameter<const char*>*>;
 
 //=================================
 // Interface of Visitors
@@ -93,7 +93,7 @@ struct PrintInfoVisitor {
         "0x%04x %s: %" PRIi64 "d (0x%" PRIx64 ")\n",  // int64_t
         "0x%04x %s: %7.4f (%7.4e)\n",                 // float
         "0x%04x %s: %7.4f (%7.4e)\n",                 // double
-        "0x%04x %s: %s\n",                            // char*
+        "0x%04x %s: %s\n",                            // const char*
     };
 };
 

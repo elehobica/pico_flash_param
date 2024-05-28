@@ -32,7 +32,7 @@ template Parameter<int32_t>::Parameter(const uint32_t& id, const char* name, con
 template Parameter<int64_t>::Parameter(const uint32_t& id, const char* name, const uint32_t& flashAddr, const valueType& defaultValue, const size_t& size);
 template Parameter<float>::Parameter(const uint32_t& id, const char* name, const uint32_t& flashAddr, const valueType& defaultValue, const size_t& size);
 template Parameter<double>::Parameter(const uint32_t& id, const char* name, const uint32_t& flashAddr, const valueType& defaultValue, const size_t& size);
-template Parameter<char*>::Parameter(const uint32_t& id, const char* name, const uint32_t& flashAddr, const valueType& defaultValue, const size_t& size);
+template Parameter<const char*>::Parameter(const uint32_t& id, const char* name, const uint32_t& flashAddr, const valueType& defaultValue, const size_t& size);
 
 template <class T>
 Parameter<T>::Parameter(const uint32_t& id, const char* name, const valueType& defaultValue, const size_t& size)
@@ -50,7 +50,7 @@ template Parameter<int32_t>::Parameter(const uint32_t& id, const char* name, con
 template Parameter<int64_t>::Parameter(const uint32_t& id, const char* name, const valueType& defaultValue, const size_t& size);
 template Parameter<float>::Parameter(const uint32_t& id, const char* name, const valueType& defaultValue, const size_t& size);
 template Parameter<double>::Parameter(const uint32_t& id, const char* name, const valueType& defaultValue, const size_t& size);
-template Parameter<char*>::Parameter(const uint32_t& id, const char* name, const valueType& defaultValue, const size_t& size);
+template Parameter<const char*>::Parameter(const uint32_t& id, const char* name, const valueType& defaultValue, const size_t& size);
 
 //=================================
 // Implementation of Params class

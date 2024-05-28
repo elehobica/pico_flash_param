@@ -8,6 +8,7 @@ if (NOT TARGET pico_flash_param)
 
     target_link_libraries(pico_flash_param INTERFACE
         hardware_exception
+        hardware_flash
         pico_flash
         pico_stdlib
     )
