@@ -33,6 +33,7 @@ template Parameter<int64_t>::Parameter(const uint32_t& id, const char* name, con
 template Parameter<float>::Parameter(const uint32_t& id, const char* name, const uint32_t& flashAddr, const valueType& defaultValue, const size_t& size);
 template Parameter<double>::Parameter(const uint32_t& id, const char* name, const uint32_t& flashAddr, const valueType& defaultValue, const size_t& size);
 template Parameter<const char*>::Parameter(const uint32_t& id, const char* name, const uint32_t& flashAddr, const valueType& defaultValue, const size_t& size);
+template Parameter<std::string>::Parameter(const uint32_t& id, const char* name, const uint32_t& flashAddr, const valueType& defaultValue, const size_t& size);
 
 template <class T>
 Parameter<T>::Parameter(const uint32_t& id, const char* name, const valueType& defaultValue, const size_t& size)
@@ -51,6 +52,7 @@ template Parameter<int64_t>::Parameter(const uint32_t& id, const char* name, con
 template Parameter<float>::Parameter(const uint32_t& id, const char* name, const valueType& defaultValue, const size_t& size);
 template Parameter<double>::Parameter(const uint32_t& id, const char* name, const valueType& defaultValue, const size_t& size);
 template Parameter<const char*>::Parameter(const uint32_t& id, const char* name, const valueType& defaultValue, const size_t& size);
+template Parameter<std::string>::Parameter(const uint32_t& id, const char* name, const valueType& defaultValue, const size_t& size);
 
 //=================================
 // Implementation of Params class
@@ -85,13 +87,13 @@ void Params::loadFromFlash()
     }
 }
 
-void Params::storeToFlash() const
+bool Params::storeToFlash() const
 {
     for (const auto& [key, item] : Params::instance().paramMap) {
         std::visit(WriteReserveVisitor{}, item);
     }
     UserFlash& userFlash = UserFlash::instance();
-    userFlash.program();
+    return userFlash.program();
 }
 
 //=================================
@@ -114,8 +116,8 @@ void FlashParam::loadFromFlash()
     Params::instance().loadFromFlash();
 }
 
-void FlashParam::finalize() const
+bool FlashParam::storeToFlash() const
 {
-    Params::instance().storeToFlash();
+    return Params::instance().storeToFlash();
 }
 }

@@ -51,7 +51,8 @@ using variant_t = std::variant<
     Parameter<uint8_t>*, Parameter<uint16_t>*, Parameter<uint32_t>*, Parameter<uint64_t>*,
     Parameter<int8_t>*, Parameter<int16_t>*, Parameter<int32_t>*, Parameter<int64_t>*,
     Parameter<float>*, Parameter<double>*,
-    Parameter<const char*>*>;
+    Parameter<const char*>*, Parameter<std::string>*
+    >;
 
 //=================================
 // Interface of Visitors
@@ -86,7 +87,8 @@ struct PrintInfoVisitor {
     void operator()(Parameter<int64_t>* param) const { printf("0x%04x %s: %" PRIi64 "d (0x%" PRIx64 ")\n", param->flashAddr, param->name, param->value, param->value); }
     void operator()(Parameter<float>* param) const { printf("0x%04x %s: %7.4f (%7.4e)\n", param->flashAddr, param->name, param->value, param->value); }
     void operator()(Parameter<double>* param) const { printf("0x%04x %s: %7.4f (%7.4e)\n", param->flashAddr, param->name, param->value, param->value); }
-    void operator()(Parameter<const char*>* param) const { printf("0x%04x %s: %s\n", param->flashAddr, param->name, param->value, param->value); }
+    void operator()(Parameter<const char*>* param) const { printf("0x%04x %s: %s\n", param->flashAddr, param->name, param->value); }
+    void operator()(Parameter<std::string>* param) const { printf("0x%04x %s: %s\n", param->flashAddr, param->name, param->value.c_str()); }
 };
 
 //=================================
@@ -99,7 +101,7 @@ class Params
     void printInfo() const;
     void loadDefault();
     void loadFromFlash();
-    void storeToFlash() const;
+    bool storeToFlash() const;
     template <typename T>
     void add(const uint32_t& id, T* paramPtr) { paramMap[id] = paramPtr; }
     template <typename T>
@@ -123,7 +125,9 @@ class FlashParam
 {
 public:
     void printInfo() const;
-    void finalize() const;
+    void loadDefault();
+    void loadFromFlash();
+    bool storeToFlash() const;
     /*
     // accessor by Parameter<> instance on template T = Parameter<>  --> use directly .set(), .get()
     template <typename T>
@@ -142,8 +146,6 @@ protected:
     ~FlashParam() = default;
     FlashParam(const FlashParam&) = delete;
     FlashParam& operator=(const FlashParam&) = delete;
-    void loadDefault();
-    void loadFromFlash();
     // accessor by uint32_t on template T = Patameter<>
     template <typename T>
     void _setValue(const uint32_t& id, const typename T::valueType& value) {

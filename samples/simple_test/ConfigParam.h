@@ -13,6 +13,7 @@
 typedef enum {
     CFG_BOOT_COUNT = 0,
     CFG_REVISION,
+    CFG_STRING,
     CFG_BOOL,
     CFG_UINT8,
     CFG_UINT16,
@@ -34,11 +35,13 @@ struct ConfigParam : FlashParamNs::FlashParam {
     uint32_t getBootCountFromFlash();
     void incBootCount();
     void initialize();
+    bool finalize();
 
-    // Parameter<T>                      instance         id               name             default
+    // Parameter<T>                      instance         id               name             default    size
     FlashParamNs::Parameter<uint32_t>    P_CFG_BOOT_COUNT{CFG_BOOT_COUNT, "CFG_BOOT_COUNT", 0};
     FlashParamNs::Parameter<const char*> P_CFG_REVISION  {CFG_REVISION,   "CFG_REVISION",   "1.0.0"};
-    FlashParamNs::Parameter<bool>        P_CFG_BOOL      {CFG_BOOL,       "CFG_BOOL",       true};
+    FlashParamNs::Parameter<std::string> P_CFG_STRING    {CFG_STRING,     "CFG_STRING",     "abcdefg", 16};
+    FlashParamNs::Parameter<bool>        P_CFG_BOOL      {CFG_BOOL,       "CFG_BOOL",       false};
     FlashParamNs::Parameter<uint8_t>     P_CFG_UINT8     {CFG_UINT8,      "CFG_UINT8",      23};
     FlashParamNs::Parameter<uint16_t>    P_CFG_UINT16    {CFG_UINT16,     "CFG_UINT16",     4096};
     FlashParamNs::Parameter<uint32_t>    P_CFG_UINT32    {CFG_UINT32,     "CFG_UINT32",     65535*4};

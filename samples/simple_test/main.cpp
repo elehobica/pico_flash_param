@@ -25,9 +25,17 @@ int main() {
     }
     printf("\r\n");
 
+    cfgParam.initialize();
     cfgParam.printInfo();
     cfgParam.P_CFG_REVISION.set("1.0.1");
+    cfgParam.P_CFG_STRING.set("0123456789ABCDEF");
+    cfgParam.incBootCount();
     cfgParam.printInfo();
+    if (cfgParam.finalize()) {
+        printf("success to store flash parameters\r\n");
+    } else {
+        printf("failure to store flash parameters\r\n");
+    }
 
     while (true) {}
 

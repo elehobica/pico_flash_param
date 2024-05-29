@@ -33,10 +33,15 @@ void ConfigParam::incBootCount()
 
 void ConfigParam::initialize()
 {
-    loadDefault();
+    loadFromFlash();
 
     // don't load from Flash if flash is blank
-    if (getBootCountFromFlash() == 0xffffffffUL) { return; }
+    if (getBootCountFromFlash() == 0xffffffffUL) {
+        //loadDefault();
+    }
+}
 
-    loadFromFlash();
+bool ConfigParam::finalize()
+{
+    return storeToFlash();
 }
