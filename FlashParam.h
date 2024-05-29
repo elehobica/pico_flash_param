@@ -75,26 +75,18 @@ struct WriteReserveVisitor : FlashVisitor {
 };
 
 struct PrintInfoVisitor {
-    template <typename T>
-    void operator()(T& param) const {
-        const variant_t item = param;
-        const auto& format = printFormat.at(item.index());
-        printf(format.c_str(), param->flashAddr, param->name, param->value, param->value);
-    }
-    const std::array<std::string, 12> printFormat = {  // this must be matched with variant order due to being referred by index()
-        "0x%04x %s: %" PRIi32 "d (0x%" PRIx32 ")\n",  // bool
-        "0x%04x %s: %" PRIu8 "d (0x%" PRIx8 ")\n",    // uint8_t
-        "0x%04x %s: %" PRIu16 "d (0x%" PRIx16 ")\n",  // uint16_t
-        "0x%04x %s: %" PRIu32 "d (0x%" PRIx32 ")\n",  // uint32_t
-        "0x%04x %s: %" PRIu64 "d (0x%" PRIx64 ")\n",  // uint64_t
-        "0x%04x %s: %" PRIi8 "d (0x%" PRIx8 ")\n",    // int8_t
-        "0x%04x %s: %" PRIi16 "d (0x%" PRIx16 ")\n",  // int16_t
-        "0x%04x %s: %" PRIi32 "d (0x%" PRIx32 ")\n",  // int32_t
-        "0x%04x %s: %" PRIi64 "d (0x%" PRIx64 ")\n",  // int64_t
-        "0x%04x %s: %7.4f (%7.4e)\n",                 // float
-        "0x%04x %s: %7.4f (%7.4e)\n",                 // double
-        "0x%04x %s: %s\n",                            // const char*
-    };
+    void operator()(Parameter<bool>* param) const { printf("0x%04x %s: %s\n", param->flashAddr, param->name, param->value ? "true" : "false"); }
+    void operator()(Parameter<uint8_t>* param) const { printf("0x%04x %s: %" PRIu8 "d (0x%" PRIx8 ")\n", param->flashAddr, param->name, param->value, param->value); }
+    void operator()(Parameter<uint16_t>* param) const { printf("0x%04x %s: %" PRIu16 "d (0x%" PRIx16 ")\n", param->flashAddr, param->name, param->value, param->value); }
+    void operator()(Parameter<uint32_t>* param) const { printf("0x%04x %s: %" PRIu32 "d (0x%" PRIx32 ")\n", param->flashAddr, param->name, param->value, param->value); }
+    void operator()(Parameter<uint64_t>* param) const { printf("0x%04x %s: %" PRIu64 "d (0x%" PRIx64 ")\n", param->flashAddr, param->name, param->value, param->value); }
+    void operator()(Parameter<int8_t>* param) const { printf("0x%04x %s: %" PRIi8 "d (0x%" PRIx8 ")\n", param->flashAddr, param->name, param->value, param->value); }
+    void operator()(Parameter<int16_t>* param) const { printf("0x%04x %s: %" PRIi16 "d (0x%" PRIx16 ")\n", param->flashAddr, param->name, param->value, param->value); }
+    void operator()(Parameter<int32_t>* param) const { printf("0x%04x %s: %" PRIi32 "d (0x%" PRIx32 ")\n", param->flashAddr, param->name, param->value, param->value); }
+    void operator()(Parameter<int64_t>* param) const { printf("0x%04x %s: %" PRIi64 "d (0x%" PRIx64 ")\n", param->flashAddr, param->name, param->value, param->value); }
+    void operator()(Parameter<float>* param) const { printf("0x%04x %s: %7.4f (%7.4e)\n", param->flashAddr, param->name, param->value, param->value); }
+    void operator()(Parameter<double>* param) const { printf("0x%04x %s: %7.4f (%7.4e)\n", param->flashAddr, param->name, param->value, param->value); }
+    void operator()(Parameter<const char*>* param) const { printf("0x%04x %s: %s\n", param->flashAddr, param->name, param->value, param->value); }
 };
 
 //=================================
