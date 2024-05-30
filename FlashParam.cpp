@@ -37,7 +37,7 @@ template Parameter<std::string>::Parameter(const uint32_t& id, const char* name,
 
 template <class T>
 Parameter<T>::Parameter(const uint32_t& id, const char* name, const valueType& defaultValue, const size_t& size)
-    : Parameter(id, name, Params::instance().getNextFlashAddr(), defaultValue, size)
+    : Parameter<T>(id, name, Params::instance().getNextFlashAddr(), defaultValue, size)
 {
 }
 template Parameter<bool>::Parameter(const uint32_t& id, const char* name, const valueType& defaultValue, const size_t& size);
@@ -119,5 +119,10 @@ void FlashParam::loadFromFlash()
 bool FlashParam::storeToFlash() const
 {
     return Params::instance().storeToFlash();
+}
+
+uint32_t FlashParam::getTotalSum() const
+{
+    return Params::instance().getTotalSum();
 }
 }

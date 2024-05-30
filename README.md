@@ -36,12 +36,12 @@ struct ConfigParam : FlashParamNs::FlashParam {
 ConfigParam cfgParam& = ConfigParam.instance();
 cfgParam.P_PARAM0.set(0x89abcdef);
 // following 'value' is uint32_t
-auto& value = cfgParam.P_PARAM0.get();
+auto value = cfgParam.P_PARAM0.get();
 ```
 ### Getter/Setter by id access
 * Template type needs to match the type of value
 ```
 ConfigParam cfgParam& = ConfigParam.instance();
 cfgParam.setValue<uint32_t>(0, 0x89abcdef);
-auto& value = cfgParam.getValue<uint32_t>();
+auto value = cfgParam.getValue<uint32_t>();
 ```

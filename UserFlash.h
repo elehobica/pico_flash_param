@@ -22,7 +22,7 @@ public:
     template <typename T>
     void read(const uint32_t& flash_ofs, const size_t& size, T& value) {
         if (flash_ofs + size <= PagePgrSize) {
-            uint8_t* ptr = reinterpret_cast<uint8_t*>(&value);
+            auto ptr = reinterpret_cast<uint8_t*>(&value);
             std::copy(flashContents + flash_ofs, flashContents + flash_ofs + size, ptr);
         }
     }
@@ -30,7 +30,7 @@ public:
     template <typename T>
     void writeReserve(const uint32_t& flash_ofs, const size_t& size, const T& value) {
         if (flash_ofs + size <= PagePgrSize) {
-            const uint8_t* ptr = reinterpret_cast<const uint8_t*>(&value);
+            auto ptr = reinterpret_cast<const uint8_t*>(&value);
             std::copy(ptr, ptr + size, std::next(data.begin(), flash_ofs));
         }
     }

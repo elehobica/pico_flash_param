@@ -17,14 +17,6 @@ ConfigParam& ConfigParam::instance()  // Singleton
     return instance;
 }
 
-uint32_t ConfigParam::getBootCountFromFlash()
-{
-    auto& param = P_CFG_BOOT_COUNT;
-    FlashParamNs::ReadFromFlashVisitor visitor;
-    visitor(&param);
-    return param.get();
-}
-
 void ConfigParam::incBootCount()
 {
     auto& param = P_CFG_BOOT_COUNT;
@@ -33,15 +25,20 @@ void ConfigParam::incBootCount()
 
 void ConfigParam::initialize()
 {
-    loadFromFlash();
+    loadDefault();
 
-    // don't load from Flash if flash is blank
-    if (getBootCountFromFlash() == 0xffffffffUL) {
-        //loadDefault();
+    // don't load from Flash if flash is blank or total size is different (format has changed?)
+    if (getValueFromFlash(P_CFG_BOOT_COUNT) == 0xffffffffUL || getValueFromFlash(P_CFG_TOTAL_SUM) != getTotalSum()) {
+        loadDefault();
+        return;
     }
+
+    loadFromFlash();
+    incBootCount();
 }
 
 bool ConfigParam::finalize()
 {
+    P_CFG_TOTAL_SUM.set(getTotalSum());
     return storeToFlash();
 }
