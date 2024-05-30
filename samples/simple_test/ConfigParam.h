@@ -30,11 +30,11 @@ typedef enum {
 // Interface of ConfigParam class
 //=================================
 struct ConfigParam : FlashParamNs::FlashParam {
-    static ConfigParam& instance() {  // Singleton
+    static ConfigParam& instance()  // Singleton
+    {
         static ConfigParam instance;
         return instance;
     }
-
     // Parameter<T>                      instance         id               name             default    size
     FlashParamNs::Parameter<const char*> P_CFG_REVISION  {CFG_REVISION,   "CFG_REVISION",   "1.0.0",   8};
     FlashParamNs::Parameter<std::string> P_CFG_STRING    {CFG_STRING,     "CFG_STRING",     "abcdefg", 16};

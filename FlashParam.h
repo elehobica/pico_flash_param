@@ -140,7 +140,6 @@ public:
     void initialize();
     bool finalize();
     void loadDefault();
-    void incBootCount();
     void printInfo() const;
     /*
     // accessor by Parameter<> instance on template T = Parameter<>  --> use directly .set(), .get()
@@ -183,5 +182,6 @@ protected:
         const auto& param = Params::instance().getParam<T>(id);
         return param.get();
     }
+    void incBootCount();
 };
 }
