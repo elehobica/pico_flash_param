@@ -128,14 +128,20 @@ class Params
 //=================================
 // Interface of FlashParam class
 //=================================
+typedef enum {
+    CFG_TOTAL_SUM = 0,
+    CFG_BOOT_COUNT,
+    CFG_ID_BASE
+} ParamIdBase_t;
+
 class FlashParam
 {
 public:
-    void printInfo() const;
+    void initialize();
+    bool finalize();
     void loadDefault();
-    void loadFromFlash();
-    bool storeToFlash() const;
-    uint32_t getTotalSum() const;
+    void incBootCount();
+    void printInfo() const;
     /*
     // accessor by Parameter<> instance on template T = Parameter<>  --> use directly .set(), .get()
     template <typename T>
@@ -156,6 +162,10 @@ public:
         visitor(&param);
         return param.get();
     }
+
+    // Parameter<T>        instance         id               name             default
+    Parameter<uint32_t>    P_CFG_TOTAL_SUM {CFG_TOTAL_SUM,  "CFG_TOTAL_SUM",  0};
+    Parameter<uint32_t>    P_CFG_BOOT_COUNT{CFG_BOOT_COUNT, "CFG_BOOT_COUNT", 0};
 
 protected:
     FlashParam() = default;

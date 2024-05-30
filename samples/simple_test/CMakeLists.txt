@@ -15,7 +15,6 @@ add_subdirectory(../.. pico_flash_param)
 set(bin_name ${PROJECT_NAME})
 add_executable(${bin_name}
     main.cpp
-    ConfigParam.cpp
 )
 
 target_link_libraries(${bin_name}

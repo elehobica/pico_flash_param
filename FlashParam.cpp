@@ -65,7 +65,7 @@ Params& Params::instance()
 
 void Params::printInfo() const
 {
-    printf("=== ConfigParam ===\n");
+    printf("=== FlashParam ===\n");
     for (const auto& [key, item] : paramMap) {
         std::visit(PrintInfoVisitor{}, item);
     }
@@ -99,30 +99,45 @@ bool Params::storeToFlash() const
 //=================================
 // Implementation of FlashParam class
 //=================================
-void FlashParam::printInfo() const
+void FlashParam::initialize()
 {
-    UserFlash& userFlash = UserFlash::instance();
-    userFlash.printInfo();
-    Params::instance().printInfo();
+    auto& params = Params::instance();
+    params.loadDefault();
+
+    // don't load from Flash if flash is blank or total size is different (format has changed?)
+    if (getValueFromFlash(P_CFG_BOOT_COUNT) == 0xffffffffUL || getValueFromFlash(P_CFG_TOTAL_SUM) != params.getTotalSum()) {
+        params.loadDefault();
+        return;
+    }
+
+    params.loadFromFlash();
+    incBootCount();
+}
+
+bool FlashParam::finalize()
+{
+    auto& params = Params::instance();
+    P_CFG_TOTAL_SUM.set(params.getTotalSum());
+    return Params::instance().storeToFlash();
 }
 
 void FlashParam::loadDefault()
 {
-    Params::instance().loadDefault();
+    auto& params = Params::instance();
+    params.loadDefault();
 }
 
-void FlashParam::loadFromFlash()
+void FlashParam::incBootCount()
 {
-    Params::instance().loadFromFlash();
+    auto& param = P_CFG_BOOT_COUNT;
+    param.set(param.get() + 1);
 }
 
-bool FlashParam::storeToFlash() const
+void FlashParam::printInfo() const
 {
-    return Params::instance().storeToFlash();
-}
-
-uint32_t FlashParam::getTotalSum() const
-{
-    return Params::instance().getTotalSum();
+    auto& userFlash = UserFlash::instance();
+    userFlash.printInfo();
+    auto& params = Params::instance();
+    params.printInfo();
 }
 }
