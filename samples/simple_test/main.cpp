@@ -1,5 +1,5 @@
 /*------------------------------------------------------/
-/ Copyright (c) 2021, Elehobica
+/ Copyright (c) 2024, Elehobica
 / Released under the BSD-2-Clause
 / refer to https://opensource.org/licenses/BSD-2-Clause
 /------------------------------------------------------*/
@@ -20,7 +20,8 @@ static void _printHelp()
     printf("d: loadDefault\r\n");
     printf("f: finalize and exit\r\n");
     printf("p: printInfo\r\n");
-    printf("s: change values\r\n");
+    printf("1: change values 1\r\n");
+    printf("2: change values 2\r\n");
 }
 
 int main() {
@@ -52,15 +53,14 @@ int main() {
                 } else {
                     printf("failure to store flash parameters\r\n");
                 }
-                break;
             } else if (c == 'p') {
                 cfgParam.printInfo();
-            } else if (c == 'a') {
+            } else if (c == '1') {
                 cfgParam.P_CFG_INT8.set(-10);
-                cfgParam.P_CFG_STRING.set("abcdef0123456789");
-            } else if (c == 's') {
+                cfgParam.P_CFG_STRING.set("abcdef0123456789ABCDEF");
+            } else if (c == '2') {
                 cfgParam.P_CFG_INT8.set(3);
-                cfgParam.P_CFG_STRING.set("0123456789ABCDEF");
+                cfgParam.P_CFG_STRING.set("0123456789");
             }
         }
     }

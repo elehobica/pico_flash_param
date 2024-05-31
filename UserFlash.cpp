@@ -39,11 +39,11 @@ UserFlash::~UserFlash()
 void UserFlash::printInfo()
 {
     printf("=== UserFlash ===\n");
-    printf("  FlashSize: 0x%x (%d)\n", FlashSize, FlashSize);
-    printf("  UserReqSize: 0x%x (%d)\n", UserReqSize, UserReqSize);
-    printf("  EraseSize: 0x%x (%d)\n", EraseSize, EraseSize);
-    printf("  PagePgrSize: 0x%x (%d)\n", PagePgrSize, PagePgrSize);
-    printf("  UserFlashOfs: 0x%x (%d)\n", UserFlashOfs, UserFlashOfs);
+    printf("FlashSize: 0x%x (%d)\n", FlashSize, FlashSize);
+    printf("UserReqSize: 0x%x (%d)\n", UserReqSize, UserReqSize);
+    printf("EraseSize: 0x%x (%d)\n", EraseSize, EraseSize);
+    printf("PagePgrSize: 0x%x (%d)\n", PagePgrSize, PagePgrSize);
+    printf("UserFlashOfs: 0x%x (%d)\n", UserFlashOfs, UserFlashOfs);
 }
 
 bool UserFlash::program()
@@ -56,6 +56,27 @@ bool UserFlash::program()
     }
     return true;
 }
+
+/*
+void UserFlash::dump()
+{
+    for (int i = 0; i < data.size(); i += 16) {
+        for (int j = 0; j < 16; j++) {
+            if (i + j >= data.size()) { break; }
+            printf("%02x ", static_cast<int>(data.at(i+j)));
+        }
+        for (int j = 0; j < 16; j++) {
+            if (i + j >= data.size()) { break; }
+            if (data.at(i+j) >= 0x20 && data.at(i+j) <= 0x7E) {
+                printf("%c", data.at(i+j));
+            } else {
+                printf(" ");
+            }
+        }
+        printf("\r\n");
+    }
+}
+*/
 
 void UserFlash::_program_core()
 {

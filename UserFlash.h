@@ -7,6 +7,7 @@
 #pragma once
 
 #include <array>
+#include <string>
 
 #include "hardware/flash.h"
 
@@ -26,15 +27,25 @@ public:
             std::copy(flashContents + flash_ofs, flashContents + flash_ofs + size, ptr);
         }
     }
-
+    void read(const uint32_t& flash_ofs, const size_t& size, std::string& value) {
+        if (flash_ofs + size <= PagePgrSize) {
+            std::copy(flashContents + flash_ofs, flashContents + flash_ofs + size, std::back_inserter(value));
+        }
+    }
     template <typename T>
     void writeReserve(const uint32_t& flash_ofs, const size_t& size, const T& value) {
         if (flash_ofs + size <= PagePgrSize) {
             auto ptr = reinterpret_cast<const uint8_t*>(&value);
-            std::copy(ptr, ptr + size, std::next(data.begin(), flash_ofs));
+            std::copy(&ptr[0], &ptr[0] + size, data.data() + flash_ofs);
+        }
+    }
+    void writeReserve(const uint32_t& flash_ofs, const size_t& size, const std::string& value) {
+        if (flash_ofs + size <= PagePgrSize) {
+            std::copy(&value[0], &value[0] + size, data.data() + flash_ofs);
         }
     }
     bool program();
+    //void dump();
 
 protected:
     static constexpr size_t FlashSize = 0x200000; // 2MB

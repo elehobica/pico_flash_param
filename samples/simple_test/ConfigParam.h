@@ -11,8 +11,7 @@
 #include "FlashParam.h"
 
 typedef enum {
-    CFG_REVISION = FlashParamNs::CFG_ID_BASE,
-    CFG_STRING,
+    CFG_STRING = FlashParamNs::CFG_ID_BASE,
     CFG_BOOL,
     CFG_UINT8,
     CFG_UINT16,
