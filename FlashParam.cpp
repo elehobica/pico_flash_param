@@ -52,6 +52,26 @@ template Parameter<float>::Parameter(const uint32_t& id, const char* name, const
 template Parameter<double>::Parameter(const uint32_t& id, const char* name, const valueType& defaultValue, const size_t& size);
 template Parameter<std::string>::Parameter(const uint32_t& id, const char* name, const valueType& defaultValue, const size_t& size);
 
+template <class T>
+typename Parameter<T>::valueType Parameter<T>::getFromFlash()
+{
+    FlashParamNs::ReadFromFlashVisitor visitor;
+    visitor(this);
+    return value;
+}
+template typename Parameter<bool>::valueType Parameter<bool>::getFromFlash();
+template typename Parameter<uint8_t>::valueType Parameter<uint8_t>::getFromFlash();
+template typename Parameter<uint16_t>::valueType Parameter<uint16_t>::getFromFlash();
+template typename Parameter<uint32_t>::valueType Parameter<uint32_t>::getFromFlash();
+template typename Parameter<uint64_t>::valueType Parameter<uint64_t>::getFromFlash();
+template typename Parameter<int8_t>::valueType Parameter<int8_t>::getFromFlash();
+template typename Parameter<int16_t>::valueType Parameter<int16_t>::getFromFlash();
+template typename Parameter<int32_t>::valueType Parameter<int32_t>::getFromFlash();
+template typename Parameter<int64_t>::valueType Parameter<int64_t>::getFromFlash();
+template typename Parameter<float>::valueType Parameter<float>::getFromFlash();
+template typename Parameter<double>::valueType Parameter<double>::getFromFlash();
+template typename Parameter<std::string>::valueType Parameter<std::string>::getFromFlash();
+
 //=================================
 // Implementation of Params class
 //=================================
@@ -103,12 +123,12 @@ void FlashParam::initialize()
     loadDefault();
 
     // don't load from Flash if flash is blank
-    if (getValueFromFlash(P_CFG_STORE_COUNT) == 0xffffffffUL) {
+    if (P_CFG_STORE_COUNT.getFromFlash() == 0xffffffffUL) {
         loadDefault(true);
         return;
     }
     // don't load from Flash if total size is different (format has changed?)
-    if (getValueFromFlash(P_CFG_MAP_HASH) != params.getMapHash()) {
+    if (P_CFG_MAP_HASH.getFromFlash() != params.getMapHash()) {
         loadDefault();
         return;
     }

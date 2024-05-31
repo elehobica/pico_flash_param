@@ -29,6 +29,7 @@ public:
     Parameter(const uint32_t& id, const char* name, const valueType& defaultValue) : Parameter(id, name, defaultValue, sizeof(T)) {};
     void set(valueType value_) { value = value_; }
     valueType get() const { return value; }
+    valueType getFromFlash();
 private:
     Parameter(const Parameter&) = delete;
     Parameter& operator=(const Parameter&) = delete;  // don't permit copy
@@ -139,13 +140,6 @@ public:
     bool finalize();
     void loadDefault(bool clearStoreCount = false);
     void printInfo() const;
-    /*
-    // accessor by Parameter<> instance on template T = Parameter<>  --> use directly .set(), .get()
-    template <typename T>
-    decltype(auto) getValue(const T& param) const { return param.get(); }
-    template <typename T>
-    void setValue(T& param, const typename T::valueType value) { param.set(value); }
-    */
     // accessor by id on template T = primitive type
     template <typename T>
     decltype(auto) getValue(const uint32_t& id) const { return _getValue<Parameter<T>>(id); }
@@ -166,13 +160,6 @@ protected:
     template <typename T>
     decltype(auto) _getValue(const uint32_t& id) const {
         const auto& param = Params::instance().getParam<T>(id);
-        return param.get();
-    }
-    // flash data accessor by Parameter<> instance on template T = Parameter<>  --> use directly .set(), .get()
-    template <typename T>
-    decltype(auto) getValueFromFlash(T& param) {
-        FlashParamNs::ReadFromFlashVisitor visitor;
-        visitor(&param);
         return param.get();
     }
 
