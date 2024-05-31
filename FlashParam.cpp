@@ -32,7 +32,6 @@ template Parameter<int32_t>::Parameter(const uint32_t& id, const char* name, con
 template Parameter<int64_t>::Parameter(const uint32_t& id, const char* name, const uint32_t& flashAddr, const valueType& defaultValue, const size_t& size);
 template Parameter<float>::Parameter(const uint32_t& id, const char* name, const uint32_t& flashAddr, const valueType& defaultValue, const size_t& size);
 template Parameter<double>::Parameter(const uint32_t& id, const char* name, const uint32_t& flashAddr, const valueType& defaultValue, const size_t& size);
-template Parameter<const char*>::Parameter(const uint32_t& id, const char* name, const uint32_t& flashAddr, const valueType& defaultValue, const size_t& size);
 template Parameter<std::string>::Parameter(const uint32_t& id, const char* name, const uint32_t& flashAddr, const valueType& defaultValue, const size_t& size);
 
 template <class T>
@@ -51,7 +50,6 @@ template Parameter<int32_t>::Parameter(const uint32_t& id, const char* name, con
 template Parameter<int64_t>::Parameter(const uint32_t& id, const char* name, const valueType& defaultValue, const size_t& size);
 template Parameter<float>::Parameter(const uint32_t& id, const char* name, const valueType& defaultValue, const size_t& size);
 template Parameter<double>::Parameter(const uint32_t& id, const char* name, const valueType& defaultValue, const size_t& size);
-template Parameter<const char*>::Parameter(const uint32_t& id, const char* name, const valueType& defaultValue, const size_t& size);
 template Parameter<std::string>::Parameter(const uint32_t& id, const char* name, const valueType& defaultValue, const size_t& size);
 
 //=================================
@@ -102,35 +100,36 @@ bool Params::storeToFlash() const
 void FlashParam::initialize()
 {
     auto& params = Params::instance();
-    params.loadDefault();
+    loadDefault();
 
-    // don't load from Flash if flash is blank or total size is different (format has changed?)
-    if (getValueFromFlash(P_CFG_BOOT_COUNT) == 0xffffffffUL || getValueFromFlash(P_CFG_TOTAL_SUM) != params.getTotalSum()) {
-        params.loadDefault();
+    // don't load from Flash if flash is blank
+    if (getValueFromFlash(P_CFG_STORE_COUNT) == 0xffffffffUL) {
+        loadDefault(true);
+        return;
+    }
+    // don't load from Flash if total size is different (format has changed?)
+    if (getValueFromFlash(P_CFG_TOTAL_SUM) != params.getTotalSum()) {
+        loadDefault();
         return;
     }
 
     params.loadFromFlash();
-    incBootCount();
 }
 
 bool FlashParam::finalize()
 {
     auto& params = Params::instance();
     P_CFG_TOTAL_SUM.set(params.getTotalSum());
+    P_CFG_STORE_COUNT.set(P_CFG_STORE_COUNT.get() + 1);
     return Params::instance().storeToFlash();
 }
 
-void FlashParam::loadDefault()
+void FlashParam::loadDefault(bool clearStoreCount)
 {
     auto& params = Params::instance();
+    auto storeCount = P_CFG_STORE_COUNT.get();
     params.loadDefault();
-}
-
-void FlashParam::incBootCount()
-{
-    auto& param = P_CFG_BOOT_COUNT;
-    param.set(param.get() + 1);
+    if (!clearStoreCount) { P_CFG_STORE_COUNT.set(storeCount); }
 }
 
 void FlashParam::printInfo() const

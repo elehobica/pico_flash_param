@@ -50,8 +50,7 @@ using variant_t = std::variant<
     Parameter<bool>*,
     Parameter<uint8_t>*, Parameter<uint16_t>*, Parameter<uint32_t>*, Parameter<uint64_t>*,
     Parameter<int8_t>*, Parameter<int16_t>*, Parameter<int32_t>*, Parameter<int64_t>*,
-    Parameter<float>*, Parameter<double>*,
-    Parameter<const char*>*, Parameter<std::string>*
+    Parameter<float>*, Parameter<double>*, Parameter<std::string>*
     >;
 
 //=================================
@@ -87,7 +86,6 @@ struct PrintInfoVisitor {
     void operator()(const Parameter<int64_t>* param) const { printf("0x%04x %s: %" PRIi64 "d (0x%" PRIx64 ")\n", param->flashAddr, param->name, param->value, param->value); }
     void operator()(const Parameter<float>* param) const { printf("0x%04x %s: %7.4f (%7.4e)\n", param->flashAddr, param->name, param->value, param->value); }
     void operator()(const Parameter<double>* param) const { printf("0x%04x %s: %7.4f (%7.4e)\n", param->flashAddr, param->name, param->value, param->value); }
-    void operator()(const Parameter<const char*>* param) const { printf("0x%04x %s: %s\n", param->flashAddr, param->name, param->value); }
     void operator()(const Parameter<std::string>* param) const { printf("0x%04x %s: %s\n", param->flashAddr, param->name, param->value.c_str()); }
 };
 
@@ -130,7 +128,7 @@ class Params
 //=================================
 typedef enum {
     CFG_TOTAL_SUM = 0,
-    CFG_BOOT_COUNT,
+    CFG_STORE_COUNT,
     CFG_ID_BASE
 } ParamIdBase_t;
 
@@ -139,7 +137,7 @@ class FlashParam
 public:
     void initialize();
     bool finalize();
-    void loadDefault();
+    void loadDefault(bool clearStoreCount = false);
     void printInfo() const;
     /*
     // accessor by Parameter<> instance on template T = Parameter<>  --> use directly .set(), .get()
@@ -153,18 +151,6 @@ public:
     decltype(auto) getValue(const uint32_t& id) const { return _getValue<Parameter<T>>(id); }
     template <typename T>
     void setValue(const uint32_t& id, const T& value) { _setValue<Parameter<T>>(id, value); }
-    template <typename T>
-    // flash data accessor by Parameter<> instance on template T = Parameter<>  --> use directly .set(), .get()
-    decltype(auto) getValueFromFlash(T& param)
-    {
-        FlashParamNs::ReadFromFlashVisitor visitor;
-        visitor(&param);
-        return param.get();
-    }
-
-    // Parameter<T>        instance         id               name             default
-    Parameter<uint32_t>    P_CFG_TOTAL_SUM {CFG_TOTAL_SUM,  "CFG_TOTAL_SUM",  0};
-    Parameter<uint32_t>    P_CFG_BOOT_COUNT{CFG_BOOT_COUNT, "CFG_BOOT_COUNT", 0};
 
 protected:
     FlashParam() = default;
@@ -182,6 +168,17 @@ protected:
         const auto& param = Params::instance().getParam<T>(id);
         return param.get();
     }
-    void incBootCount();
+    // flash data accessor by Parameter<> instance on template T = Parameter<>  --> use directly .set(), .get()
+    template <typename T>
+    decltype(auto) getValueFromFlash(T& param) {
+        FlashParamNs::ReadFromFlashVisitor visitor;
+        visitor(&param);
+        return param.get();
+    }
+
+    // built-in parameters
+    // Parameter<T>        instance          id                name              default
+    Parameter<uint32_t>    P_CFG_TOTAL_SUM  {CFG_TOTAL_SUM,   "CFG_TOTAL_SUM",   0};
+    Parameter<uint32_t>    P_CFG_STORE_COUNT{CFG_STORE_COUNT, "CFG_STORE_COUNT", 0};
 };
 }

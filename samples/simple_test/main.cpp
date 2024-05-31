@@ -56,11 +56,9 @@ int main() {
             } else if (c == 'p') {
                 cfgParam.printInfo();
             } else if (c == 'a') {
-                cfgParam.P_CFG_REVISION.set("1.0.0");
                 cfgParam.P_CFG_INT8.set(-10);
                 cfgParam.P_CFG_STRING.set("abcdef0123456789");
             } else if (c == 's') {
-                cfgParam.P_CFG_REVISION.set("1.0.1");
                 cfgParam.P_CFG_INT8.set(3);
                 cfgParam.P_CFG_STRING.set("0123456789ABCDEF");
             }
