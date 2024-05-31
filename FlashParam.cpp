@@ -108,7 +108,7 @@ void FlashParam::initialize()
         return;
     }
     // don't load from Flash if total size is different (format has changed?)
-    if (getValueFromFlash(P_CFG_TOTAL_SUM) != params.getTotalSum()) {
+    if (getValueFromFlash(P_CFG_MAP_HASH) != params.getMapHash()) {
         loadDefault();
         return;
     }
@@ -119,7 +119,7 @@ void FlashParam::initialize()
 bool FlashParam::finalize()
 {
     auto& params = Params::instance();
-    P_CFG_TOTAL_SUM.set(params.getTotalSum());
+    P_CFG_MAP_HASH.set(params.getMapHash());
     P_CFG_STORE_COUNT.set(P_CFG_STORE_COUNT.get() + 1);
     return Params::instance().storeToFlash();
 }

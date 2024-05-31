@@ -103,9 +103,9 @@ class Params
     template <typename T>
     void add(const uint32_t& id, T* param) {
         paramMap[id] = param;
-        // update totalSum
+        // update mapHash
         const variant_t item = param;
-        totalSum += param->flashAddr*3 + param->size*5 + item.index()*7;
+        mapHash += param->flashAddr*73 + param->size*83 + item.index()*97;
     }
     template <typename T>
     T& getParam(const uint32_t& id) {
@@ -115,10 +115,10 @@ class Params
     }
     uint32_t getNextFlashAddr() const { return nextFlashAddr; }
     void setNextFlashAddr(uint32_t addr) { nextFlashAddr = addr; }
-    uint32_t getTotalSum() const { return totalSum; }
+    uint32_t getMapHash() const { return mapHash; }
     std::map<const uint32_t, variant_t> paramMap;
     uint32_t nextFlashAddr = 0;
-    uint32_t totalSum = 0;
+    uint32_t mapHash = 0;
     template<typename> friend class Parameter;  // for all Parameter<> classes
     friend class FlashParam;
 };
@@ -127,7 +127,7 @@ class Params
 // Interface of FlashParam class
 //=================================
 typedef enum {
-    CFG_TOTAL_SUM = 0,
+    CFG_MAP_HASH = 0,
     CFG_STORE_COUNT,
     CFG_ID_BASE
 } ParamIdBase_t;
@@ -178,7 +178,7 @@ protected:
 
     // built-in parameters
     // Parameter<T>        instance          id                name              default
-    Parameter<uint32_t>    P_CFG_TOTAL_SUM  {CFG_TOTAL_SUM,   "CFG_TOTAL_SUM",   0};
+    Parameter<uint32_t>    P_CFG_MAP_HASH   {CFG_MAP_HASH,    "CFG_MAP_HASH",    0};
     Parameter<uint32_t>    P_CFG_STORE_COUNT{CFG_STORE_COUNT, "CFG_STORE_COUNT", 0};
 };
 }
