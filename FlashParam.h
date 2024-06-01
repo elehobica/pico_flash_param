@@ -139,9 +139,9 @@ typedef enum {
 class FlashParam
 {
 public:
-    void initialize();
+    void initialize(bool preserveStoreCount = false);
     bool finalize();
-    void loadDefault(bool clearStoreCount = false);
+    void loadDefault(bool preserveStoreCount = false);
     void printInfo() const;
     // accessor by id on template T = primitive type
     template <typename T>

@@ -117,19 +117,19 @@ bool Params::storeToFlash() const
 //=================================
 // Implementation of FlashParam class
 //=================================
-void FlashParam::initialize()
+void FlashParam::initialize(bool preserveStoreCount)
 {
     auto& params = Params::instance();
     loadDefault();
 
     // don't load from Flash if flash is blank
     if (P_CFG_STORE_COUNT.getFromFlash() == 0xffffffffUL) {
-        loadDefault(true);
+        loadDefault();
         return;
     }
     // don't load from Flash if total size is different (format has changed?)
     if (P_CFG_MAP_HASH.getFromFlash() != params.getMapHash()) {
-        loadDefault();
+        loadDefault(preserveStoreCount);
         return;
     }
 
@@ -144,12 +144,12 @@ bool FlashParam::finalize()
     return Params::instance().storeToFlash();
 }
 
-void FlashParam::loadDefault(bool clearStoreCount)
+void FlashParam::loadDefault(bool preserveStoreCount)
 {
     auto& params = Params::instance();
     auto storeCount = P_CFG_STORE_COUNT.get();
     params.loadDefault();
-    if (!clearStoreCount) { P_CFG_STORE_COUNT.set(storeCount); }
+    if (preserveStoreCount) { P_CFG_STORE_COUNT.set(storeCount); }
 }
 
 void FlashParam::printInfo() const
