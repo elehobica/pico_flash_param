@@ -19,10 +19,16 @@ add_executable(${bin_name}
     main.cpp
 )
 
+target_include_directories(picow_config_wifi INTERFACE
+    $ENV{PICO_EXAMPLES_PATH}/pico_w/wifi
+    $ENV{PICO_EXAMPLES_PATH}/pico_w/wifi/ntp_client
+)
+
 target_link_libraries(${bin_name}
     hardware_adc
-    pico_stdlib
+    pico_cyw43_arch_lwip_poll
     pico_flash_param
+    pico_stdlib
     picow_config_wifi
 )
 

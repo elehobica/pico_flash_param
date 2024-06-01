@@ -12,5 +12,8 @@ if (NOT TARGET pico_flash_param)
         pico_flash
         pico_stdlib
     )
-    target_include_directories(pico_flash_param INTERFACE ${CMAKE_CURRENT_LIST_DIR})
+
+    target_include_directories(pico_flash_param INTERFACE
+        ${CMAKE_CURRENT_LIST_DIR}
+    )
 endif()
