@@ -45,7 +45,8 @@ public:
         }
     }
     bool program();
-    //void dump();
+    bool clear();
+    void dump();
 
 protected:
     static constexpr size_t FlashSize = 0x200000; // 2MB

@@ -57,7 +57,12 @@ bool UserFlash::program()
     return true;
 }
 
-/*
+bool UserFlash::clear()
+{
+    for (auto& item : data) { item = 0xff; }
+    return program();
+}
+
 void UserFlash::dump()
 {
     for (int i = 0; i < data.size(); i += 16) {
@@ -76,7 +81,6 @@ void UserFlash::dump()
         printf("\r\n");
     }
 }
-*/
 
 void UserFlash::_program_core()
 {

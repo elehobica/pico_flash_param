@@ -25,8 +25,9 @@ static inline uint32_t _millis()
 
 static void _printHelp()
 {
-    printf("h: print help\r\n");
+    printf("h: print Help\r\n");
     printf("w: configure Wi-Fi\r\n");
+    printf("c: clear Flash\r\n");
 }
 
 static bool _check_pico_w()
@@ -92,6 +93,7 @@ int main() {
     picoW = _check_pico_w();
 
     ConfigParam& cfgParam = ConfigParam::instance();
+    FlashParamNs::UserFlash& usrFlash = FlashParamNs::UserFlash::instance();
 
     // serial connection waiting (max 1 sec)
     while (!stdio_usb_connected() && _millis() < 1000) {
@@ -139,6 +141,12 @@ int main() {
             char c = static_cast<char>(chr);
             if (c == 'h') {
                 _printHelp();
+            } else if (c == 'c') {
+                if (usrFlash.clear()) {
+                    printf("Flash cleared\r\n");
+                } else {
+                    printf("ERROR: failed to clear Flash\r\n");
+                }
             } else if (c == 'w' && picoW) {
                 std::string ssid, pass;
                 if (config_wifi(ssid, pass)) {
@@ -150,7 +158,6 @@ int main() {
                         cfgParam.P_CFG_WIFI_PASS.set(pass);
                         if (cfgParam.finalize()) {
                             printf("Wi-Fi configuration stored to flash\r\n");
-                            cfgParam.printInfo();
                         } else {
                             printf("ERROR: failed to store Wi-Fi configuration to flash\r\n");
                         }
