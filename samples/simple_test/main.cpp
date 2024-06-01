@@ -18,7 +18,7 @@ static void _printHelp()
 {
     printf("h: print help\r\n");
     printf("d: loadDefault\r\n");
-    printf("f: finalize and exit\r\n");
+    printf("f: finalize (store to flash)\r\n");
     printf("p: printInfo\r\n");
     printf("1: change values 1\r\n");
     printf("2: change values 2\r\n");

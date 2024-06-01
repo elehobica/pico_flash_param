@@ -2,15 +2,15 @@
 
 ## Overview
 * Store user parameters at the end part of flash memory of rp2040
-* Allow parameters to have one type out of various primitive types
+* Allow parameter to have one type out of various primitive types
 * Provide default value for factory reset
 * Provide flash address auto calculation, otherwise allow to designate arbitary flash address
-* Serve Flash parameter direct access setter and getter with its type
-* Also serve access setter and getter by id, which requires to select correct type
+* Serve direct access setter and getter linked to the parameter's type
+* Also serve access setter and getter by id, which requires to select the correct type
 
 ## Usage
 ### User parameter class declaration
-* Generate interherited class from FlashParamNs::FlashParam as Singleton
+* Prepare interherited class from FlashParamNs::FlashParam as Singleton
 * Define user parameters with template with primitive type
   * Supported types: bool, uint8_t, uint16_t, uint32_t, uint64_t, int8_t, int16_t, int32_t, int64_t, float, double, and std::string
 ```
@@ -92,14 +92,53 @@ UserFlashOfs: 0x1ff000 (2093056)
 ```
 ### Getter/Setter by direct instance access
 * Direct access available without designating its type
-* For example, _value_ becomes `uint32_t` at following case
+* For example, _value_ becomes `uint16_t` at following case
 ```
-cfgParam.P_PARAM0.set(0x89abcdef);
-const auto& value = cfgParam.P_PARAM0.get();
+cfgParam.P_CFG_UINT16.set(0x89abcdef);
+const auto& value = cfgParam.P_CFG_UINT16.get();
 ```
 ### Getter/Setter by id access
 * To access by id, template type needs to be designated to meet the type of the parameter
 ```
-cfgParam.setValue<uint32_t>(0, 0x89abcdef);
-const auto& value = cfgParam.getValue<uint32_t>();
+cfgParam.setValue<uint16_t>(cfgParam.ID_BASE + 3, 0x0123);
+const auto& value = cfgParam.getValue<uint16_t>(cfgParam.ID_BASE + 3);
 ```
+
+## How to build sample projects
+* See ["Getting started with Raspberry Pi Pico"](https://datasheets.raspberrypi.org/pico/getting-started-with-pico.pdf)
+* Put "pico-sdk", "pico-examples" and "pico-extras" on the same level with this project folder.
+* Set environmental variables for PICO_SDK_PATH, PICO_EXTRAS_PATH and PICO_EXAMPLES_PATH
+* Confirmed with Pico SDK 1.5.1
+```
+> git clone -b 1.5.1 https://github.com/raspberrypi/pico-sdk.git
+> cd pico-sdk
+> git submodule update -i
+> cd ..
+> git clone -b sdk-1.5.1 https://github.com/raspberrypi/pico-examples.git
+>
+> git clone -b sdk-1.5.1 https://github.com/raspberrypi/pico-extras.git
+> 
+> git clone -b main https://github.com/elehobica/pico_user_flash.git
+> cd pico_user_flash
+> cd samples\xxxxx  # target sample project
+> cd ..
+```
+### Windows
+* Build is confirmed with Developer Command Prompt for VS 2022 and Visual Studio Code on Windows environment
+* Confirmed with cmake-3.27.2-windows-x86_64 and gcc-arm-none-eabi-10.3-2021.10-win32
+* Lanuch "Developer Command Prompt for VS 2022"
+```
+> mkdir build && cd build
+> cmake -G "NMake Makefiles" ..
+> nmake
+```
+* Put "*.uf2" on RPI-RP2 drive
+### Linux
+* Build is confirmed with [rp2040-dev-docker:sdk-1.5.1-1.0.1]( https://hub.docker.com/r/elehobica/rp2040-dev-docker) 
+* Confirmed with cmake-3.22.1 and arm-none-eabi-gcc (15:10.3-2021.07-4) 10.3.1
+```
+$ mkdir build && cd build
+$ cmake ..
+$ make -j4
+```
+* Download "*.uf2" on RPI-RP2 drive
