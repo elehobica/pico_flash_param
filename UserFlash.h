@@ -29,6 +29,7 @@ public:
     }
     void read(const uint32_t& flash_ofs, const size_t& size, std::string& value) {
         if (flash_ofs + size <= PagePgrSize) {
+            value.clear();
             std::copy(flashContents + flash_ofs, flashContents + flash_ofs + size, std::back_inserter(value));
         }
     }
