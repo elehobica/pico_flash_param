@@ -96,6 +96,9 @@ struct PrintInfoVisitor {
 class Params
 {
 // all private except for friend classes
+    static constexpr uint32_t PRIME0 = 0x61e77795;
+    static constexpr uint32_t PRIME1 = 0x8089f3a3;
+    static constexpr uint32_t PRIME2 = 0xcdae6891;
     static Params& instance(); // Singleton
     void printInfo() const;
     void loadDefault();
@@ -106,7 +109,7 @@ class Params
         paramMap[id] = param;
         // update mapHash
         const variant_t item = param;
-        mapHash += param->flashAddr*73 + param->size*83 + item.index()*97;
+        mapHash += param->flashAddr*PRIME0 + param->size*PRIME1 + item.index()*PRIME2;
     }
     template <typename T>
     T& getParam(const uint32_t& id) {
