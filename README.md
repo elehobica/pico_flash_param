@@ -10,7 +10,7 @@
 
 ## Usage
 ### User parameter class declaration
-* Prepare interherited class from FlashParamNs::FlashParam as Singleton
+* Prepare interherited class from FlashParamNs::FlashParam as Singleton (e.g. _ConfigParam_)
 * Define user parameters with template with primitive type
   * Supported types: bool, uint8_t, uint16_t, uint32_t, uint64_t, int8_t, int16_t, int32_t, int64_t, float, double, and std::string
 ```
@@ -102,6 +102,29 @@ const auto& value = cfgParam.P_CFG_UINT16.get();
 ```
 cfgParam.setValue<uint16_t>(cfgParam.ID_BASE + 3, 0x0123);
 const auto& value = cfgParam.getValue<uint16_t>(cfgParam.ID_BASE + 3);
+```
+
+## Operating with multicore program
+* As generaal, flash operation should be done from core0 only
+* Even in that case, `flash_safe_execute_core_init()` needs to be called from core1 to notify safe condition for programming flash 
+* Otherwise, `cfgParam.finalize()` will fail due to the faulure of `UserFlash::program()`
+* Refer to samples/multicore_test project
+```
+...
+#include "pico/flash.h"
+#include "pico/multicore.h"
+
+static void core1_process() {
+    flash_safe_execute_core_init();  // notify core0 that there's no access to flash on core1
+    ...
+}
+
+int main() {
+    ...
+    multicore_launch_core1(core1_process);
+    ...
+}
+
 ```
 
 ## How to build sample projects
