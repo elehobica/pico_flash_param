@@ -29,6 +29,8 @@ public:
     Parameter(const uint32_t& id, const char* name, const valueType& defaultValue) : Parameter(id, name, defaultValue, sizeof(T)) {};
     void set(valueType value_) { value = value_; }
     valueType get() const { return value; }
+    void setDefault() { if (value != defaultValue) value = defaultValue; };
+    valueType getDefault() const { return defaultValue; }
     valueType getFromFlash();
 private:
     Parameter(const Parameter&) = delete;
@@ -139,10 +141,10 @@ typedef enum {
 class FlashParam
 {
 public:
-    void initialize(bool preserveStoreCount = false);
-    bool finalize();
-    void loadDefault(bool preserveStoreCount = false);
-    void printInfo() const;
+    virtual void initialize(bool preserveStoreCount = false);
+    virtual bool finalize();
+    virtual void loadDefault(bool preserveStoreCount = false);
+    virtual void printInfo() const;
     // accessor by id on template T = primitive type
     template <typename T>
     decltype(auto) getValue(const uint32_t& id) const { return _getValue<Parameter<T>>(id); }
