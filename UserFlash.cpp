@@ -40,9 +40,11 @@ void UserFlash::printInfo()
 {
     printf("=== UserFlash ===\n");
     printf("FlashSize: 0x%x (%d)\n", FlashSize, FlashSize);
+    printf("SectorSize: 0x%x (%d)\n", FLASH_SECTOR_SIZE, FLASH_SECTOR_SIZE);
+    printf("PageSize: 0x%x (%d)\n", FLASH_PAGE_SIZE, FLASH_PAGE_SIZE);
     printf("UserReqSize: 0x%x (%d)\n", UserReqSize, UserReqSize);
     printf("EraseSize: 0x%x (%d)\n", EraseSize, EraseSize);
-    printf("PagePgrSize: 0x%x (%d)\n", PagePgrSize, PagePgrSize);
+    printf("PageProgSize: 0x%x (%d)\n", PageProgSize, PageProgSize);
     printf("UserFlashOfs: 0x%x (%d)\n", UserFlashOfs, UserFlashOfs);
 }
 
@@ -85,7 +87,7 @@ void UserFlash::dump()
 void UserFlash::_program_core()
 {
     flash_range_erase(UserFlashOfs, EraseSize);
-    flash_range_program(UserFlashOfs, data.data(), FLASH_PAGE_SIZE);
+    flash_range_program(UserFlashOfs, data.data(), data.size());
     std::copy(flashContents, flashContents + data.size(), data.begin());
 }
 }

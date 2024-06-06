@@ -3,6 +3,7 @@
 ## Overview
 * Store user parameters at the end part of flash memory of rp2040
 * Allow parameter to have one type out of various primitive types
+* Up to total 1024 bytes available for parameters
 * Provide default value for factory reset
 * Provide flash address auto calculation, otherwise allow to designate arbitary flash address
 * Serve direct access setter and getter linked to the parameter's type
@@ -70,9 +71,11 @@ cfgParam.printInfo();
 ```
 === UserFlash ===
 FlashSize: 0x200000 (2097152)
+SectorSize: 0x1000 (4096)
+PageSize: 0x100 (256)
 UserReqSize: 0x400 (1024)
 EraseSize: 0x1000 (4096)
-PagePgrSize: 0x400 (1024)
+PageProgSize: 0x400 (1024)
 UserFlashOfs: 0x1ff000 (2093056)
 === FlashParam ===
 0x0000 CFG_MAP_HASH: 3015833569d (0xb3c1f7e1)
@@ -169,7 +172,7 @@ $ make -j4
 * Download "*.uf2" on RPI-RP2 drive
 
 ## Examples
-### Sample projects
+### Representative sample projects
 * [simple_test](samples/simple_test)
 * [wifi_ssid_password](samples/wifi_ssid_password)
 * [multicore_test](samples/multicore_test)
