@@ -46,23 +46,23 @@ struct ConfigParam : FlashParamNs::FlashParam {
 ConfigParam cfgParam& = ConfigParam.instance();
 ```
 ### Initialize
-* Load parameters from flash
-* If flash is blank or flash format seems changed, default value are loaded
+* Load all parameters from flash
+* If flash is blank or flash format seems changed, default values are loaded
 ```
 cfgParam.initialize();
 ```
 ### Finalize
-* Store parameters to flash
+* Store all parameters to flash
 ```
 cfgParam.finalize();
 ```
 ### Load default value
-* Force to load default value
+* Force all parameters to load default value
 ```
 cfgParam.loadDefault();
 ```
 ### Print info
-* Print parameter information
+* Print information on user flash area and parameter mapping
 ```
 cfgParam.printInfo();
 ```
@@ -75,7 +75,7 @@ EraseSize: 0x1000 (4096)
 PagePgrSize: 0x400 (1024)
 UserFlashOfs: 0x1ff000 (2093056)
 === FlashParam ===
-0x0000 CFG_MAP_HASH: 44081d (0xac31)
+0x0000 CFG_MAP_HASH: 3015833569d (0xb3c1f7e1)
 0x0004 CFG_STORE_COUNT: 67d (0x43)
 0x0008 CFG_STRING: abcdefg
 0x0018 CFG_BOOL: false
@@ -93,22 +93,24 @@ UserFlashOfs: 0x1ff000 (2093056)
 ### Getter/Setter by direct instance access
 * Direct access available without designating its type
 * For example, _value_ becomes `uint16_t` at following case
+* Note that `set()` updates parameter value, however, it's not yet stored to flash until finalize() is called
 ```
 cfgParam.P_CFG_UINT16.set(0x89abcdef);
 const auto& value = cfgParam.P_CFG_UINT16.get();
 ```
 ### Getter/Setter by id access
 * To access by id, template type needs to be designated to meet the type of the parameter
+* Note that `setValue<T>()` updates parameter value, however, it's not yet stored to flash until finalize() is called
 ```
 cfgParam.setValue<uint16_t>(cfgParam.ID_BASE + 3, 0x0123);
 const auto& value = cfgParam.getValue<uint16_t>(cfgParam.ID_BASE + 3);
 ```
 
 ## Operating with multicore program
-* As generaal, flash operation should be done from core0 only
+* As general, flash operation should be done from core0 only
 * Even in that case, `flash_safe_execute_core_init()` needs to be called from core1 to notify safe condition for programming flash 
 * Otherwise, `cfgParam.finalize()` will fail due to the faulure of `UserFlash::program()`
-* Refer to samples/multicore_test project
+* See [multicore_test](tree/main/samples/multicore_test)
 ```
 ...
 #include "pico/flash.h"
@@ -166,7 +168,12 @@ $ make -j4
 ```
 * Download "*.uf2" on RPI-RP2 drive
 
-## Application Example
+## Examples
+### Sample projects
+* [simple_test](samples/simple_test)
+* [wifi_ssid_password](samples/wifi_ssid_password)
+* [multicore_test](samples/multicore_test)
+### External applications
 * [RPi_Pico_WAV_Player](https://github.com/elehobica/RPi_Pico_WAV_Player)
 * [pico_spdif_recorder](https://github.com/elehobica/pico_spdif_recorder)
 * [pico_crp42602y_ctrl](https://github.com/elehobica/pico_crp42602y_ctrl/tree/main/samples/single_pb_deck_with_rt_counter)
