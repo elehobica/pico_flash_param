@@ -11,7 +11,7 @@
 
 ## Usage
 ### User parameter class declaration
-* Prepare interherited class from FlashParamNs::FlashParam as Singleton (e.g. _ConfigParam_)
+* Prepare interherited class header from FlashParamNs::FlashParam as Singleton (e.g. _ConfigParam.h_)
 * Define user parameters with template with primitive type
   * Supported types: bool, uint8_t, uint16_t, uint32_t, uint64_t, int8_t, int16_t, int32_t, int64_t, float, double, and std::string
 ```
