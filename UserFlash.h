@@ -59,7 +59,8 @@ protected:
     virtual ~UserFlash();
     UserFlash(const UserFlash&) = delete;
     UserFlash& operator=(const UserFlash&) = delete;
-    void _program_core();
+    void _programCore();
+    void _printValue(const char* name, int value, bool decimal = false);
     const uint8_t* flashContents = reinterpret_cast<const uint8_t*>(XIP_BASE + UserFlashOfs);
     std::array<uint8_t, PageProgSize> data;
 

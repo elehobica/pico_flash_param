@@ -70,13 +70,14 @@ cfgParam.printInfo();
 * Output example
 ```
 === UserFlash ===
-FlashSize: 0x200000 (2097152)
-SectorSize: 0x1000 (4096)
-PageSize: 0x100 (256)
-UserReqSize: 0x400 (1024)
-EraseSize: 0x1000 (4096)
-PageProgSize: 0x400 (1024)
-UserFlashOfs: 0x1ff000 (2093056)
+FlashSize: 0x200000 (2097152d)
+SectorSize: 0x1000 (4096d)
+PageSize: 0x100 (256d)
+UserReqSize: 0x400 (1024d)
+EraseSize: 0x1000 (4096d)
+PageProgSize: 0x400 (1024d)
+UserFlashOfs: 0x1ff000
+UserFlashReadAddr: 0x101ff000
 === FlashParam ===
 0x0000 CFG_MAP_HASH: 3015833569d (0xb3c1f7e1)
 0x0004 CFG_STORE_COUNT: 67d (0x43)

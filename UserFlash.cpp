@@ -7,7 +7,6 @@
 #include "UserFlash.h"
 
 #include <cstdio>
-#include <cstring>
 
 #include "pico/flash.h"
 
@@ -15,7 +14,7 @@ namespace FlashParamNs {
 void _user_flash_program_core(void* ptr)
 {
     UserFlash* inst = static_cast<UserFlash*>(ptr);
-    inst->_program_core();
+    inst->_programCore();
 }
 
 //=================================
@@ -38,14 +37,15 @@ UserFlash::~UserFlash()
 
 void UserFlash::printInfo()
 {
-    printf("=== UserFlash ===\n");
-    printf("FlashSize: 0x%x (%d)\n", FlashSize, FlashSize);
-    printf("SectorSize: 0x%x (%d)\n", FLASH_SECTOR_SIZE, FLASH_SECTOR_SIZE);
-    printf("PageSize: 0x%x (%d)\n", FLASH_PAGE_SIZE, FLASH_PAGE_SIZE);
-    printf("UserReqSize: 0x%x (%d)\n", UserReqSize, UserReqSize);
-    printf("EraseSize: 0x%x (%d)\n", EraseSize, EraseSize);
-    printf("PageProgSize: 0x%x (%d)\n", PageProgSize, PageProgSize);
-    printf("UserFlashOfs: 0x%x (%d)\n", UserFlashOfs, UserFlashOfs);
+    printf("=== UserFlash ===\r\n");
+    _printValue("FlashSize", FlashSize, true);
+    _printValue("SectorSize", FLASH_SECTOR_SIZE, true);
+    _printValue("PageSize", FLASH_PAGE_SIZE, true);
+    _printValue("UserReqSize", UserReqSize, true);
+    _printValue("EraseSize", EraseSize, true);
+    _printValue("PageProgSize", PageProgSize, true);
+    _printValue("UserFlashOfs", UserFlashOfs);
+    _printValue("UserFlashReadAddr", reinterpret_cast<const int>(flashContents));
 }
 
 bool UserFlash::program()
@@ -84,10 +84,19 @@ void UserFlash::dump()
     }
 }
 
-void UserFlash::_program_core()
+void UserFlash::_programCore()
 {
     flash_range_erase(UserFlashOfs, EraseSize);
     flash_range_program(UserFlashOfs, data.data(), data.size());
     std::copy(flashContents, flashContents + data.size(), data.begin());
+}
+
+void UserFlash::_printValue(const char* name, int value, bool decimal)
+{
+    if (decimal) {
+        printf("%s: 0x%x (%dd)\r\n", name, value, value);
+    } else {
+        printf("%s: 0x%x\r\n", name, value);
+    }
 }
 }
