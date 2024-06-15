@@ -91,7 +91,7 @@ void Params::printInfo() const
 
 void Params::loadDefault()
 {
-    for (auto& [key, item] : paramMap) {
+    for (const auto& [key, item] : paramMap) {
         std::visit([](auto&& param) {
             param->loadDefault();
         }, item);
@@ -100,14 +100,14 @@ void Params::loadDefault()
 
 void Params::loadFromFlash()
 {
-    for (auto& [key, item] : paramMap) {
+    for (const auto& [key, item] : paramMap) {
         std::visit(ReadFromFlashVisitor{}, item);
     }
 }
 
 bool Params::storeToFlash() const
 {
-    for (const auto& [key, item] : Params::instance().paramMap) {
+    for (const auto& [key, item] : paramMap) {
         std::visit(WriteReserveVisitor{}, item);
     }
     UserFlash& userFlash = UserFlash::instance();
@@ -119,7 +119,6 @@ bool Params::storeToFlash() const
 //=================================
 void FlashParam::initialize(bool preserveStoreCount)
 {
-    auto& params = Params::instance();
     loadDefault();
 
     // don't load from Flash if flash is blank
@@ -127,12 +126,15 @@ void FlashParam::initialize(bool preserveStoreCount)
         loadDefault();
         return;
     }
+
+    auto& params = Params::instance();
     // don't load from Flash if total size is different (format has changed?)
     if (P_CFG_MAP_HASH.getFromFlash() != params.getMapHash()) {
         loadDefault(preserveStoreCount);
         return;
     }
 
+    // otherwise, load from Flash
     params.loadFromFlash();
 }
 
@@ -141,7 +143,7 @@ bool FlashParam::finalize()
     auto& params = Params::instance();
     P_CFG_MAP_HASH.set(params.getMapHash());
     P_CFG_STORE_COUNT.set(P_CFG_STORE_COUNT.get() + 1);
-    return Params::instance().storeToFlash();
+    return params.storeToFlash();
 }
 
 void FlashParam::loadDefault(bool preserveStoreCount)
