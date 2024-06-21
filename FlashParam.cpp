@@ -128,7 +128,7 @@ void FlashParam::initialize(bool preserveStoreCount)
     }
 
     auto& params = Params::instance();
-    // don't load from Flash if total size is different (format has changed?)
+    // don't load from Flash if hash value is different (parhaps format has changed)
     if (P_CFG_MAP_HASH.getFromFlash() != params.getMapHash()) {
         loadDefault(preserveStoreCount);
         return;
