@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * Add setDefault() and getDefault() on Parameter<> class
 ### Changed
 * Revised PrintInfo() format of UserFlash
+* Support pico-sdk 2.0.0 (previously 1.5.1)
 ### Fixed
 * Fix to store over 256 bytes (up to 1024 bytes)
 
