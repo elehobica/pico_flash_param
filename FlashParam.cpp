@@ -123,7 +123,6 @@ void FlashParam::initialize(bool preserveStoreCount)
 
     // don't load from Flash if flash is blank
     if (P_CFG_STORE_COUNT.getFromFlash() == 0xffffffffUL) {
-        loadDefault();
         return;
     }
 
