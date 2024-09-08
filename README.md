@@ -110,6 +110,13 @@ cfgParam.setValue<uint16_t>(cfgParam.ID_BASE + 3, 0x0123);
 const auto& value = cfgParam.getValue<uint16_t>(cfgParam.ID_BASE + 3);
 ```
 
+## Built-in parameters
+There are two bult-in parameters in the library. Usually those values are automatically generated or updated in the library.
+### CFG_MAP_HASH
+* Hash value to verify if type and addressing of whole parameters are changed. The library checks this value when it's started and if it detects that type and addressing of whole parameters are changed, the set of default values are loaded to the parameters to avoid wrong values to be reflected for the purpose of fail-safe.
+### CFG_STORE_COUNT
+* Flash store count. It starts from zero when the target area of flash is blank and is incremented every time when the values are stored to the flash by `finalize()`.
+
 ## Operating with multicore program
 * As general, flash operation should be done from core0 only
 * Even in that case, `flash_safe_execute_core_init()` needs to be called from core1 to notify safe condition for programming flash 
