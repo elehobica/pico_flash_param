@@ -29,13 +29,12 @@ public:
     Parameter(const uint32_t& id, const char* name, const valueType& defaultValue) : Parameter(id, name, defaultValue, sizeof(T)) {};
     void set(valueType value_) { value = value_; }
     valueType get() const { return value; }
-    void setDefault() { if (value != defaultValue) value = defaultValue; };
+    void loadDefault() { value = defaultValue; }
     valueType getDefault() const { return defaultValue; }
     valueType getFromFlash();
 private:
     Parameter(const Parameter&) = delete;
     Parameter& operator=(const Parameter&) = delete;  // don't permit copy
-    void loadDefault() { value = defaultValue; }
     const uint32_t id;
     const char* name;
     const uint32_t flashAddr;
