@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 * Add support for Raspberry Pi Pico2
+* Support pico-sdk 2.1.0
 ### Changed
 * Remove setDefault() from Parameter<> class -> use loadDefault()
 
