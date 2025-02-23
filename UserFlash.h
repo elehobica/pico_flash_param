@@ -50,7 +50,12 @@ public:
     void dump();
 
 protected:
+#if defined(RASPBERRYPI_PICO) || defined(RASPBERRYPI_PICO_W)
     static constexpr size_t FlashSize = 0x200000; // 2MB
+#elif defined(RASPBERRYPI_PICO2) || defined(RASPBERRYPI_PICO2_W)
+    static constexpr size_t FlashSize = 0x400000; // 4MB
+#else
+#endif
     static constexpr size_t UserReqSize = 1024; // Byte
     static constexpr size_t EraseSize = ((UserReqSize + (FLASH_SECTOR_SIZE - 1)) / FLASH_SECTOR_SIZE) * FLASH_SECTOR_SIZE;
     static constexpr size_t PageProgSize = ((UserReqSize + (FLASH_PAGE_SIZE - 1)) / FLASH_PAGE_SIZE) * FLASH_PAGE_SIZE;

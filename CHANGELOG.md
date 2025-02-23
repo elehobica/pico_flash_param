@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+* Add support for Raspberry Pi Pico2
 ### Changed
 * Remove setDefault() from Parameter<> class -> use loadDefault()
 

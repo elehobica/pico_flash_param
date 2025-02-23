@@ -1,7 +1,7 @@
-# User flash parameter library for Raspberry Pi Pico
+# User flash parameter library for Raspberry Pi Pico / Pico 2
 
 ## Overview
-* Store user parameters at the end part of flash memory of rp2040
+* Store user parameters at the end part of flash memory of target borads
 * Allow parameter to have one type out of various primitive types
 * Up to total 1024 bytes available for parameters
 * Provide default value for factory reset
@@ -165,19 +165,21 @@ int main() {
 * Lanuch "Developer Command Prompt for VS 2022"
 ```
 > mkdir build && cd build
-> cmake -G "NMake Makefiles" ..
+> cmake -G "NMake Makefiles" ..  ; (for Raspberry Pi Pico 1 series)
+> cmake -G "NMake Makefiles" -DPICO_PLATFORM=rp2350 -DPICO_BOARD=pico2 ..  ; (for Raspberry Pi Pico 2)
 > nmake
 ```
-* Put "*.uf2" on RPI-RP2 drive
+* Put "*.uf2" on RPI-RP2 or RP2350 drive
 ### Linux
 * Build is confirmed with [pico-sdk-dev-docker:sdk-2.0.0-1.0.0]( https://hub.docker.com/r/elehobica/pico-sdk-dev-docker)
 * Confirmed with cmake-3.22.1 and arm-none-eabi-gcc (15:10.3-2021.07-4) 10.3.1
 ```
 $ mkdir build && cd build
-$ cmake ..
+$ cmake ..  # (for Raspberry Pi Pico 1 series)
+$ cmake -DPICO_PLATFORM=rp2350 -DPICO_BOARD=pico2 ..  # (for Raspberry Pi Pico 2)
 $ make -j4
 ```
-* Download "*.uf2" on RPI-RP2 drive
+* Download "*.uf2" on RPI-RP2 or RP2350 drive
 
 ## Examples
 ### Representative sample projects
