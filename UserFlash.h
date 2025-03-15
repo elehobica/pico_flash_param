@@ -50,16 +50,12 @@ public:
     void dump();
 
 protected:
-#if defined(RASPBERRYPI_PICO) || defined(RASPBERRYPI_PICO_W)
-    static constexpr size_t FlashSize = 0x200000; // 2MB
-#elif defined(RASPBERRYPI_PICO2) || defined(RASPBERRYPI_PICO2_W)
-    static constexpr size_t FlashSize = 0x400000; // 4MB
-#else
-#endif
+    // PICO_FLASH_SIZE_BYTES: from pico-sdk/src/boards/include/boards/*.h
+    // FLASH_xxx_SIZE       : from pico-sdk/src/rp2_common/hardware_flash/include/hardware/flash.h
     static constexpr size_t UserReqSize = 1024; // Byte
     static constexpr size_t EraseSize = ((UserReqSize + (FLASH_SECTOR_SIZE - 1)) / FLASH_SECTOR_SIZE) * FLASH_SECTOR_SIZE;
     static constexpr size_t PageProgSize = ((UserReqSize + (FLASH_PAGE_SIZE - 1)) / FLASH_PAGE_SIZE) * FLASH_PAGE_SIZE;
-    static constexpr uint32_t UserFlashOfs = FlashSize - EraseSize;
+    static constexpr uint32_t UserFlashOfs = PICO_FLASH_SIZE_BYTES - EraseSize;
     UserFlash();
     virtual ~UserFlash();
     UserFlash(const UserFlash&) = delete;

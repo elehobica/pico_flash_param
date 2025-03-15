@@ -38,7 +38,7 @@ UserFlash::~UserFlash()
 void UserFlash::printInfo()
 {
     printf("=== UserFlash ===\r\n");
-    _printValue("FlashSize", FlashSize, true);
+    _printValue("FlashSize", PICO_FLASH_SIZE_BYTES, true);
     _printValue("SectorSize", FLASH_SECTOR_SIZE, true);
     _printValue("PageSize", FLASH_PAGE_SIZE, true);
     _printValue("UserReqSize", UserReqSize, true);
