@@ -1,7 +1,7 @@
 # Sample project: wifi_ssid_passord for pico_flash_param library
 
 ## Overview
-* For Raspberry Pi Pico W only
+* For Raspberry Pi Pico W and Raspberry Pi Pico 2 W
 * Configure Wi-Fi configuration through serial terminal
 * Store Wi-Fi SSID and password on user flash if once Wi-Fi connection is successful
 * Recall Wi-Fi configuration on flash from next power cycle 

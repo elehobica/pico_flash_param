@@ -5,9 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
 ### Added
 * Add support for Raspberry Pi Pico 2
 * Support pico-sdk 2.1.1
+* Add GitHub Actions for build and release
 ### Changed
 * Remove setDefault() from Parameter<> class -> use loadDefault()
 

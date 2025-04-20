@@ -1,5 +1,7 @@
 # User flash parameter library for Raspberry Pi Pico / Pico 2
 
+[![Build](https://github.com/elehobica/pico_flash_param/actions/workflows/build-binaries.yml/badge.svg)](https://github.com/elehobica/pico_flash_param/actions/workflows/build-binaries.yml)
+
 ## Overview
 * Store user parameters at the end part of flash memory of target borads
 * Allow parameter to have one type out of various primitive types
