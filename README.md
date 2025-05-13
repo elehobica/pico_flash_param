@@ -183,6 +183,9 @@ $ make -j4
 ```
 * Download "*.uf2" on RPI-RP2 or RP2350 drive
 
+## For more detail about internal code structure
+* See [DeepWiki](https://deepwiki.com/elehobica/pico_flash_param) (powered by [Devin](https://app.devin.ai/invite/WFPByHrQP7TwsUuq))
+
 ## Examples
 ### Representative sample projects
 * [simple_test](samples/simple_test)
