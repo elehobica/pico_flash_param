@@ -27,11 +27,11 @@ public:
     Parameter(const uint32_t& id, const char* name, const uint32_t& flashAddr, const valueType& defaultValue) : Parameter(id, name, flashAddr, defaultValue, sizeof(T)) {};
     Parameter(const uint32_t& id, const char* name, const valueType& defaultValue, const size_t& size);
     Parameter(const uint32_t& id, const char* name, const valueType& defaultValue) : Parameter(id, name, defaultValue, sizeof(T)) {};
-    void set(valueType value_) { value = value_; }
-    valueType get() const { return value; }
+    void set(const valueType& value_) { value = value_; }
+    const valueType& get() const { return value; }
     void loadDefault() { value = defaultValue; }
-    valueType getDefault() const { return defaultValue; }
-    valueType getFromFlash();
+    const valueType& getDefault() const { return defaultValue; }
+    const valueType& getFromFlash();
 private:
     Parameter(const Parameter&) = delete;
     Parameter& operator=(const Parameter&) = delete;  // don't permit copy

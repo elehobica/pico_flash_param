@@ -53,24 +53,24 @@ template Parameter<double>::Parameter(const uint32_t& id, const char* name, cons
 template Parameter<std::string>::Parameter(const uint32_t& id, const char* name, const valueType& defaultValue, const size_t& size);
 
 template <class T>
-typename Parameter<T>::valueType Parameter<T>::getFromFlash()
+const typename Parameter<T>::valueType& Parameter<T>::getFromFlash()
 {
     FlashParamNs::ReadFromFlashVisitor visitor;
     visitor(this);
     return value;
 }
-template typename Parameter<bool>::valueType Parameter<bool>::getFromFlash();
-template typename Parameter<uint8_t>::valueType Parameter<uint8_t>::getFromFlash();
-template typename Parameter<uint16_t>::valueType Parameter<uint16_t>::getFromFlash();
-template typename Parameter<uint32_t>::valueType Parameter<uint32_t>::getFromFlash();
-template typename Parameter<uint64_t>::valueType Parameter<uint64_t>::getFromFlash();
-template typename Parameter<int8_t>::valueType Parameter<int8_t>::getFromFlash();
-template typename Parameter<int16_t>::valueType Parameter<int16_t>::getFromFlash();
-template typename Parameter<int32_t>::valueType Parameter<int32_t>::getFromFlash();
-template typename Parameter<int64_t>::valueType Parameter<int64_t>::getFromFlash();
-template typename Parameter<float>::valueType Parameter<float>::getFromFlash();
-template typename Parameter<double>::valueType Parameter<double>::getFromFlash();
-template typename Parameter<std::string>::valueType Parameter<std::string>::getFromFlash();
+template const typename Parameter<bool>::valueType& Parameter<bool>::getFromFlash();
+template const typename Parameter<uint8_t>::valueType& Parameter<uint8_t>::getFromFlash();
+template const typename Parameter<uint16_t>::valueType& Parameter<uint16_t>::getFromFlash();
+template const typename Parameter<uint32_t>::valueType& Parameter<uint32_t>::getFromFlash();
+template const typename Parameter<uint64_t>::valueType& Parameter<uint64_t>::getFromFlash();
+template const typename Parameter<int8_t>::valueType& Parameter<int8_t>::getFromFlash();
+template const typename Parameter<int16_t>::valueType& Parameter<int16_t>::getFromFlash();
+template const typename Parameter<int32_t>::valueType& Parameter<int32_t>::getFromFlash();
+template const typename Parameter<int64_t>::valueType& Parameter<int64_t>::getFromFlash();
+template const typename Parameter<float>::valueType& Parameter<float>::getFromFlash();
+template const typename Parameter<double>::valueType& Parameter<double>::getFromFlash();
+template const typename Parameter<std::string>::valueType& Parameter<std::string>::getFromFlash();
 
 //=================================
 // Implementation of Params class
