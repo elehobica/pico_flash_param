@@ -82,7 +82,8 @@ struct PrintInfoVisitor {
     void operator()(const Parameter<uint16_t>* param) const { printf("0x%04x %s: %" PRIu16 "d (0x%" PRIx16 ")\n", param->flashAddr, param->name, param->value, param->value); }
     void operator()(const Parameter<uint32_t>* param) const { printf("0x%04x %s: %" PRIu32 "d (0x%" PRIx32 ")\n", param->flashAddr, param->name, param->value, param->value); }
     void operator()(const Parameter<uint64_t>* param) const { printf("0x%04x %s: %" PRIu64 "d (0x%" PRIx64 ")\n", param->flashAddr, param->name, param->value, param->value); }
-    void operator()(const Parameter<int8_t>* param) const { printf("0x%04x %s: %" PRIi8 "d (0x%" PRIx8 ")\n", param->flashAddr, param->name, param->value, param->value); }
+    // int8_t: don't use PRIi8 ("hhi"). pico_printf casts "hh" arguments to char, which is unsigned on ARM, so negative values would print as 0..255
+    void operator()(const Parameter<int8_t>* param) const { printf("0x%04x %s: %dd (0x%x)\n", param->flashAddr, param->name, static_cast<int>(param->value), static_cast<uint8_t>(param->value)); }
     void operator()(const Parameter<int16_t>* param) const { printf("0x%04x %s: %" PRIi16 "d (0x%" PRIx16 ")\n", param->flashAddr, param->name, param->value, param->value); }
     void operator()(const Parameter<int32_t>* param) const { printf("0x%04x %s: %" PRIi32 "d (0x%" PRIx32 ")\n", param->flashAddr, param->name, param->value, param->value); }
     void operator()(const Parameter<int64_t>* param) const { printf("0x%04x %s: %" PRIi64 "d (0x%" PRIx64 ")\n", param->flashAddr, param->name, param->value, param->value); }

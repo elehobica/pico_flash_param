@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * Support pico-sdk 2.3.0
 ### Fixed
 * Revised get functions to return const reference
+* Fix printInfo() to show negative int8_t values as signed
 
 ## [1.0.2] - 2025-04-20
 ### Added
